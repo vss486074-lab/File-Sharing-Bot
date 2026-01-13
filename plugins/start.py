@@ -115,13 +115,22 @@ async def start_command(client: Client, message: Message):
 
         return
     else:
-        reply_markup = InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton("😊 About Me", callback_data = "about"),
-                    InlineKeyboardButton("🔒 Close", callback_data = "close")
-                ]
-            ]
+        from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
+@Client.on_message(filters.command("start"))
+async def start(client, message):
+    buttons = InlineKeyboardMarkup(
+        [
+            [InlineKeyboardButton("📂 Send File", callback_data="send_file")],
+            [InlineKeyboardButton("❓ Help", callback_data="help")]
+        ]
+    )
+
+    await message.reply_text(
+        "👋 Welcome!\n\nPlease choose an option below:",
+        reply_markup=buttons
+    )
         )
         if START_PIC:  # Check if START_PIC has a value
             await message.reply_photo(
